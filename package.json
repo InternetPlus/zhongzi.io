@@ -1,0 +1,23 @@
+{
+  "name": "zhongzi.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ie10-viewport-bug-workaround.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -c 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InternetPlus/zhongzi.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/InternetPlus/zhongzi.io/issues"
+  },
+  "homepage": "https://github.com/InternetPlus/zhongzi.io#readme",
+  "devDependencies": {
+    "http-server": "^0.10.0"
+  }
+}
