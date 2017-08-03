@@ -21,7 +21,7 @@ p.mb-1.hit-source-name {
 }
 
 input#search {
-    /* border: 2px; */
+    border: 2px;
 }
 
 .container {

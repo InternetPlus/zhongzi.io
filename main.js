@@ -58,7 +58,32 @@ function magnet(element, event) {
   event.preventDefault()
   const input = element.querySelector('input')
   input.disabled = false
-  input.select()
+
+  const isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
+
+  if (isiOSDevice) {
+
+    const editable = input.contentEditable;
+    const readOnly = input.readOnly;
+
+    input.contentEditable = true;
+    input.readOnly = false;
+
+    const range = document.createRange();
+    range.selectNodeContents(input);
+
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    input.setSelectionRange(0, Infinity);
+    input.contentEditable = editable;
+    input.readOnly = readOnly;
+
+  } else {
+     input.select();
+  }
+
   document.execCommand('copy')
   input.disabled = true
   notie.alert({text: 'magnet has been copied to clipboard!'})
