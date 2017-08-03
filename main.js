@@ -54,11 +54,11 @@ async function refetch() {
 refetch()
 window.addEventListener("hashchange", refetch)
 
+const isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
+
 function magnet(element, event) {
   event.preventDefault()
   const input = element.querySelector('input')
-
-  const isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
   if (isiOSDevice) {
 
@@ -75,16 +75,16 @@ function magnet(element, event) {
     selection.removeAllRanges();
     selection.addRange(range);
 
-    input.setSelectionRange(0, Infinity);
+    input.setSelectionRange(0, 1e6);
     input.contentEditable = editable;
     input.readOnly = readOnly;
-    notie.alert({text: 'Please copy to clipboard manually!'})
+    //notie.alert({text: 'Please copy to clipboard manually!'})
 
   } else {
     input.select();
-    document.execCommand('copy')
-    notie.alert({text: 'Magnet has been copied to clipboard!'})
   }
+  document.execCommand('copy')
+  notie.alert({text: 'Magnet has been copied to clipboard!'})
 
 }
 
