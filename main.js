@@ -57,7 +57,6 @@ window.addEventListener("hashchange", refetch)
 function magnet(element, event) {
   event.preventDefault()
   const input = element.querySelector('input')
-  input.disabled = false
 
   const isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
@@ -79,14 +78,14 @@ function magnet(element, event) {
     input.setSelectionRange(0, Infinity);
     input.contentEditable = editable;
     input.readOnly = readOnly;
+    notie.alert({text: 'Please copy to clipboard manually!'})
 
   } else {
-     input.select();
+    input.select();
+    document.execCommand('copy')
+    notie.alert({text: 'Magnet has been copied to clipboard!'})
   }
 
-  document.execCommand('copy')
-  input.disabled = true
-  notie.alert({text: 'magnet has been copied to clipboard!'})
 }
 
 function submit(event) {

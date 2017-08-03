@@ -5,7 +5,7 @@
     <!--<a class="list-group-item list-group-item-action flex-column align-items-start hit-source" href="javascript:void(0)" onclick="magnet(this)">-->
       <p class="mb-1 hit-source-name">{{ hit._source.name }}</p>
       <form class="input-group input-group-sm" onsubmit="magnet(this, event)">
-        <input class="form-control" disabled value="{{ hit._source.magnet }}" />
+        <input class="form-control" readonly value="{{ hit._source.magnet }}" />
         <span class="input-group-btn">
           <button class="btn btn-primary" type="submit">Copy</button>
         </span>
