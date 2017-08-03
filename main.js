@@ -54,14 +54,18 @@ async function refetch() {
 refetch()
 window.addEventListener("hashchange", refetch)
 
-function magnet(element) {
-  element.querySelector('input').select()
+function magnet(element, event) {
+  event.preventDefault()
+  const input = element.querySelector('input')
+  input.disabled = false
+  input.select()
   document.execCommand('copy')
-  alert('magnet has been copied to clipboard!')
+  input.disabled = true
+  notie.alert({text: 'magnet has been copied to clipboard!'})
 }
 
-function submit(e) {
-  e.preventDefault()
+function submit(event) {
+  event.preventDefault()
   location.hash = `#/?q=${encodeURIComponent(search.value)}`
 }
 window['search-form'].addEventListener('submit', submit)

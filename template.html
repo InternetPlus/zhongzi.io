@@ -1,13 +1,18 @@
 <header>Results</header>
 <ul class="list-group">
 {% for hit in hits.hits %}
-  <li class="list-group-item" data-hashinfo="{{ hit._id }}">
-    <a class="list-group-item list-group-item-action flex-column align-items-start hit-source" href="javascript:void(0)" onclick="magnet(this)">
+  <li class="list-group-item list-group-item-action flex-column align-items-start hit-source" data-hashinfo="{{ hit._id }}">
+    <!--<a class="list-group-item list-group-item-action flex-column align-items-start hit-source" href="javascript:void(0)" onclick="magnet(this)">-->
       <p class="mb-1 hit-source-name">{{ hit._source.name }}</p>
-      <input class="text-muted" value="{{ hit._source.magnet }}" />
-    </a>
+      <form class="input-group input-group-sm" onsubmit="magnet(this, event)">
+        <input class="form-control" disabled value="{{ hit._source.magnet }}" />
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="submit">Copy</button>
+        </span>
+      </form>
+    <!--</a>-->
   </li>
 {% else %}
-  <li>This would display if the 'item' collection were empty</li>
+  <li>No found!</li>
 {% endfor %}
 </ul>

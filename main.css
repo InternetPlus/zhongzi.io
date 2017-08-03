@@ -12,11 +12,6 @@ li.list-group-item {
 
 input.text-muted {/* text-overflow: ellipsis; *//* text-align: left; *//* white-space: nowrap; *//* overflow: hidden; */width: 100%;}
 
-a.list-group-item.list-group-item-action.flex-column.align-items-start.hit-source {
-    overflow-x: hidden;
-    background: rgba(255, 255, 255, 0.8);
-}
-
 p.mb-1.hit-source-name {
     color: #636c72!important;
     text-overflow: ellipsis;
@@ -33,7 +28,9 @@ input#search {
     max-width: 100vw;
 }
 
-.content-container li.list-group-item {
-    padding-left: 0;
-    padding-right: 0;
+li.list-group-item.list-group-item-action.flex-column.align-items-start.hit-source {
+    overflow-x: hidden;
+    background: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
