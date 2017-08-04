@@ -1,6 +1,7 @@
 const now = new Date
 const loading = window.results.innerHTML
 const client = new elasticsearch.Client({host: 'https://torrdb.zhongzi.io'})
+const advises = `超高清 超清 1280P BD 全高清 1080P FHD 高清 720P HD ${now.getFullYear()}`
 
 async function refetch() {
   window.results.innerHTML = loading
@@ -22,7 +23,7 @@ async function refetch() {
             },
             {
               match: {
-                name: `720P 1080P 1280P HD FHD BD 高清 全高清 超清 超高清 ${now.getFullYear()}`
+                name: advises
               }
             },
           ],
