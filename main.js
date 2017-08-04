@@ -15,7 +15,12 @@ async function refetch() {
               match_phrase: {
                 name: q
               }
-            }
+            },
+            {
+              match: {
+                name: '720P 1080P 1280P HD FHD BD 高清 全高清 超清 超高清'
+              }
+            },
           ],
           filter: [
             {
