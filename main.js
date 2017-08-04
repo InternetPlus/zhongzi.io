@@ -1,9 +1,13 @@
+const now = new Date
+const loading = window.results.innerHTML
+const client = new elasticsearch.Client({host: 'https://torrdb.zhongzi.io'})
+
 async function refetch() {
+  window.results.innerHTML = loading
   const search = location.hash.slice(location.hash.indexOf('?') + 1)
   let {q} = Qs.parse(search)
-  q = q || '福利'
+  q = q || '电影'
   window.search.value = q
-  const client = new elasticsearch.Client({host: 'https://torrdb.zhongzi.io'})
   const results = await client.search({
     index: 'torrdb',
     type: 'torrent',
@@ -18,7 +22,7 @@ async function refetch() {
             },
             {
               match: {
-                name: '720P 1080P 1280P HD FHD BD 高清 全高清 超清 超高清'
+                name: `720P 1080P 1280P HD FHD BD 高清 全高清 超清 超高清 ${now.getFullYear()}`
               }
             },
           ],
@@ -30,14 +34,7 @@ async function refetch() {
             },
             {
               terms: {
-                extnames: [
-                  'mp4',
-                  'mpg',
-                  'avi',
-                  'mkv',
-                  'rmvb',
-                  'rm'
-                ]
+                extnames: [ 'mp4', 'mpg', 'avi', 'mkv', 'rmvb', 'rm' ]
               }
             }
           ]
