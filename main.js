@@ -20,7 +20,9 @@
     const search = location.hash.slice(location.hash.indexOf('?') + 1)
     let {q} = qs.parse(search)
     q = q || '电影'
-    window.search.value = q
+    if (window.search.value !== q) {
+      window.search.value = q
+    }
 
     {
       const search = {
@@ -89,5 +91,7 @@ function magnet(element, event) {
 
 function submit(event) {
   event.preventDefault()
+  //window['search-form'].querySelector('[type=submit]').focus()
+  document.querySelector('.content-container').focus()
   location.hash = `#/?q=${encodeURIComponent(search.value)}`
 }
