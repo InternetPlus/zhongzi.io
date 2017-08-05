@@ -2,7 +2,7 @@
 
   const now = new Date
   const loading = window.results.innerHTML
-  const client = new elasticsearch.Client({host: 'https://torrdb.zhongzi.io'})
+  const client = new elasticsearch.Client({host: 'https://api.zhongzi.io'})
   const advises = `超高清 超清 1280P BD 全高清 1080P FHD 高清 720P HD ${now.getFullYear()}`
   const format = [ 'mkv', 'avi', 'mp4', 'mpg', 'mpeg', 'rmvb', 'rm', 'webm' ]
   const filter = [
