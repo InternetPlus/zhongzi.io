@@ -75,3 +75,8 @@ li.list-group-item.list-group-item-action.flex-column.align-items-start.hit-sour
   }
 }
 /* spinner end */
+
+
+p.mb-1.text-left.hit-source-name a {
+    color: #2e9fff;
+}
