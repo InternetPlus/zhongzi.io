@@ -2,24 +2,28 @@
 
   const now = new Date
   const loading = window.results.innerHTML
-  const client = new elasticsearch.Client({host: 'https://api.zhongzi.io'})
   const advises = `超高清 超清 1280P BD 全高清 1080P FHD 高清 720P HD ${now.getFullYear()}`
   const format = [ 'mkv', 'avi', 'mp4', 'mpg', 'mpeg', 'rmvb', 'rm', 'webm' ]
   const filter = [
     { terms: { extnames: format } },
     { match: { name: advises } },
   ]
+  const qs = window.Qs
+
+  nunjucks.configure({
+    web: { async: true },
+    autoescape: true
+  })
 
   async function refetch() {
     window.results.innerHTML = loading
     const search = location.hash.slice(location.hash.indexOf('?') + 1)
-    let {q} = Qs.parse(search)
+    let {q} = qs.parse(search)
     q = q || '电影'
     window.search.value = q
-    const results = await client.search({
-      index: 'torrdb',
-      type: 'torrent',
-      body: {
+
+    {
+      const search = {
         query: {
           bool: {
             must:   [ { match:        { name: q } } ],
@@ -28,16 +32,20 @@
           }
         }
       }
-    })
+      const _q = b64EncodeUnicode(JSON.stringify(search))
+      const response = await fetch(`https://api.zhongzi.io/search/?${qs.stringify({q: _q})}`)
+      const results = await response.json()
 
-    nunjucks.configure({
-      web: { async: true },
-      autoescape: true
-    })
+      nunjucks.render('template.html', results, (error, html) => {
+        window.results.innerHTML = html
+      })
+    }
+  }
 
-    nunjucks.render('template.html', results, (error, html) => {
-      window.results.innerHTML = html
-    })
+  function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+      return String.fromCharCode('0x' + p1);
+    }));
   }
 
   refetch()
