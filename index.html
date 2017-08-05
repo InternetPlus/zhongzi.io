@@ -40,14 +40,14 @@
           <!--</div>-->
 
           <div class="inner cover">
-            <h1 class="cover-heading"><a href="#/">Zhongzi</a></h1>
+            <a class="btn" href="#/"><h1 class="cover-heading">Zhongzi</h1></a>
             <!--<p class="lead">Coming soon.</p>-->
             <p class="lead">
-              <form id="search-form" class="input-group input-group-lg" action=".">
-                <input id="search" type="search" class="form-control" placeholder="Search for...">
+              <form id="search-form" class="input-group input-group-lg" action="." onsubmit="window.submit(event)">
+                <input id="search" type="search" name="q" class="form-control" placeholder="Search for...">
                 <input type="submit" style="display: none" />
                 <span class="input-group-btn">
-                  <button class="btn btn-secondary active" type="submit">Go!</button>
+                  <button class="btn bg-faded" type="submit">Go!</button>
                 </span>
               </form>
               <!--<a href="#" class="btn btn-lg btn-secondary">Learn more</a>-->

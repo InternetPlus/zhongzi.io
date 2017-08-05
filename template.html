@@ -1,18 +1,16 @@
-<header>Results</header>
-<ul class="list-group">
+<header class="mb-4">Results</header>
+<ul class="list-group mb-2">
 {% for hit in hits.hits %}
-  <li class="list-group-item list-group-item-action flex-column align-items-start hit-source" data-hashinfo="{{ hit._id }}">
-    <!--<a class="list-group-item list-group-item-action flex-column align-items-start hit-source" href="javascript:void(0)" onclick="magnet(this)">-->
-      <p class="mb-1 hit-source-name">{{ hit._source.name }}</p>
-      <form class="input-group input-group-sm" onsubmit="magnet(this, event)">
-        <input class="form-control" readonly value="{{ hit._source.magnet }}" />
-        <span class="input-group-btn">
-          <button class="btn btn-primary" type="submit">Copy</button>
-        </span>
-      </form>
-    <!--</a>-->
+  <li class="list-group-item list-group-item-action flex-column align-items-start mb-4 hit-source" data-hashinfo="{{ hit._id }}">
+    <p class="mb-1 text-left hit-source-name">{{ hit._source.name }}</p>
+    <form class="input-group input-group-sm" onsubmit="magnet(this, event)">
+      <input class="form-control" readonly value="{{ hit._source.magnet }}" />
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="submit">Copy</button>
+      </span>
+    </form>
   </li>
 {% else %}
-  <li class="list-group-item text-center">Not found!</li>
+  <li class="list-group-item d-inline-block text-center font-weight-bold">Not found!</li>
 {% endfor %}
 </ul>

@@ -10,14 +10,8 @@ li.list-group-item {
     background: rgba(255, 255, 255, 0);
 }
 
-input.text-muted {/* text-overflow: ellipsis; *//* text-align: left; *//* white-space: nowrap; *//* overflow: hidden; */width: 100%;}
-
-p.mb-1.hit-source-name {
-    color: #636c72!important;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
-    overflow-x: hidden;
+p.hit-source-name {
+    word-break: break-all;
 }
 
 input#search {
@@ -29,10 +23,7 @@ input#search {
 }
 
 li.list-group-item.list-group-item-action.flex-column.align-items-start.hit-source {
-    overflow-x: hidden;
     background: rgba(255, 255, 255, 0.8);
-    margin-bottom: 1em;
-    margin-top: 1em;
 }
 
 .spinner {
