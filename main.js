@@ -91,7 +91,6 @@ function magnet(element, event) {
 
 function submit(event) {
   event.preventDefault()
-  //window['search-form'].querySelector('[type=submit]').focus()
-  document.querySelector('.content-container').focus()
+  document.activeElement.blur()
   location.hash = `#/?q=${encodeURIComponent(search.value)}`
 }
