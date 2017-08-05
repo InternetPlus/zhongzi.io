@@ -11,7 +11,7 @@
   const qs = window.Qs
 
   nunjucks.configure({
-    web: { async: true },
+    web: { async: true, useCache: true },
     autoescape: true
   })
 
