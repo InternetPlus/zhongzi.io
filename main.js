@@ -1,61 +1,49 @@
-const now = new Date
-const loading = window.results.innerHTML
-const client = new elasticsearch.Client({host: 'https://torrdb.zhongzi.io'})
-const advises = `超高清 超清 1280P BD 全高清 1080P FHD 高清 720P HD ${now.getFullYear()}`
+(() => {
 
-async function refetch() {
-  window.results.innerHTML = loading
-  const search = location.hash.slice(location.hash.indexOf('?') + 1)
-  let {q} = Qs.parse(search)
-  q = q || '电影'
-  window.search.value = q
-  const results = await client.search({
-    index: 'torrdb',
-    type: 'torrent',
-    body: {
-      query: {
-        bool: {
-          should: [
-            {
-              match_phrase: {
-                name: q
-              }
-            },
-            {
-              match: {
-                name: advises
-              }
-            },
-          ],
-          filter: [
-            {
-              match: {
-                name: q
-              }
-            },
-            {
-              terms: {
-                extnames: [ 'mp4', 'mpg', 'avi', 'mkv', 'rmvb', 'rm' ]
-              }
-            }
-          ]
+  const now = new Date
+  const loading = window.results.innerHTML
+  const client = new elasticsearch.Client({host: 'https://torrdb.zhongzi.io'})
+  const advises = `超高清 超清 1280P BD 全高清 1080P FHD 高清 720P HD ${now.getFullYear()}`
+  const format = [ 'mkv', 'avi', 'mp4', 'mpg', 'mpeg', 'rmvb', 'rm', 'webm' ]
+  const filter = [
+    { terms: { extnames: format } },
+    { match: { name: advises } },
+  ]
+
+  async function refetch() {
+    window.results.innerHTML = loading
+    const search = location.hash.slice(location.hash.indexOf('?') + 1)
+    let {q} = Qs.parse(search)
+    q = q || '电影'
+    window.search.value = q
+    const results = await client.search({
+      index: 'torrdb',
+      type: 'torrent',
+      body: {
+        query: {
+          bool: {
+            must:   [ { match:        { name: q } } ],
+            should: [ { match_phrase: { name: q } } ],
+            filter
+          }
         }
       }
-    }
-  })
+    })
 
-  nunjucks.configure({
-    web: { async: true },
-    autoescape: true
-  })
+    nunjucks.configure({
+      web: { async: true },
+      autoescape: true
+    })
 
-  nunjucks.render('template.html', results, (error, html) => {
-    window.results.innerHTML = html
-  })
-}
+    nunjucks.render('template.html', results, (error, html) => {
+      window.results.innerHTML = html
+    })
+  }
 
-refetch()
-window.addEventListener("hashchange", refetch)
+  refetch()
+  window.addEventListener("hashchange", refetch)
+
+})()
 
 const isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
@@ -95,4 +83,3 @@ function submit(event) {
   event.preventDefault()
   location.hash = `#/?q=${encodeURIComponent(search.value)}`
 }
-window['search-form'].addEventListener('submit', submit)
