@@ -17,9 +17,17 @@
 
   async function refetch() {
     window.results.innerHTML = loading
-    const search = location.hash.slice(location.hash.indexOf('?') + 1)
-    let {q} = qs.parse(search)
-    q = q || '电影'
+    let q
+    {
+      const search = location.hash.slice(location.hash.indexOf('?') + 1)
+      q = qs.parse(search).q
+      if (!q) {
+        q = qs.parse(location.search.slice(1)).q
+      }
+      if (!q) {
+        q = '电影'
+      }
+    }
     window.search.value = q
     document.title = `${q} - Zhongzi.io`
 
