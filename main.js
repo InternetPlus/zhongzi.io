@@ -20,9 +20,8 @@
     const search = location.hash.slice(location.hash.indexOf('?') + 1)
     let {q} = qs.parse(search)
     q = q || '电影'
-    if (window.search.value !== q) {
-      window.search.value = q
-    }
+    window.search.value = q
+    document.title = `${q} - Zhongzi.io`
 
     {
       const search = {
