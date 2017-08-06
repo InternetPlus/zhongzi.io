@@ -24,11 +24,12 @@
       if (!q) {
         q = qs.parse(location.search.slice(1)).q
       }
-      if (!q) {
-        q = '电影'
+      if (q) {
+        window.search.value = q
+      } else {
+        q = 'Movie'
       }
     }
-    window.search.value = q
     document.title = `${q} - Zhongzi.io`
 
     ga('set', 'page', `${location.pathname}${location.search}${location.hash}`);
