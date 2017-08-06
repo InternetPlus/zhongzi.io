@@ -23,6 +23,9 @@
     window.search.value = q
     document.title = `${q} - Zhongzi.io`
 
+    ga('set', 'page', `${location.pathname}${location.search}${location.hash}`);
+    ga('send', 'pageview');
+
     {
       const search = {
         query: {
