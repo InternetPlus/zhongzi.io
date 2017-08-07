@@ -80,3 +80,7 @@ li.list-group-item.list-group-item-action.flex-column.align-items-start.hit-sour
 p.mb-1.text-left.hit-source-name a {
     color: #2e9fff;
 }
+
+@media (max-width: 768px) {
+  .col-md-4.sidebar {padding: 0 10px;}
+}

@@ -69,7 +69,9 @@
 const isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
 function magnet(element, event) {
+
   event.preventDefault()
+
   const input = element.querySelector('input')
 
   if (isiOSDevice) {
