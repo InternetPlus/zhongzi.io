@@ -181,30 +181,29 @@ async function watch(element) {
     .then(json => json.file)
   }
 
-  const addTransferResult = await fetch(
-    `${API_PREFIX}/transfers/add?${API_SUFFIX}`,
-    {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'content-type': 'application/json',
-        'accept'      : 'application/json'
-      },
-      body: JSON.stringify({url: magnet, save_parent_id: root.id})
-    }
+  let transfer
+  const transfers = await fetch(
+    `${API_PREFIX}/transfers/list?${API_SUFFIX}`,
   )
   .then(response => response.json())
+  .then(json => json.transfers)
+  transfer = transfers.find(transfer => magnet === transfer.source)
 
-  let transfer
-  if ('Alreadyadded' === addTransferResult.error_type) {
-    const transfers = await fetch(
-      `${API_PREFIX}/transfers/list?${API_SUFFIX}`,
+  if (!transfer) {
+    transfer = await fetch(
+      `${API_PREFIX}/transfers/add?${API_SUFFIX}`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'content-type': 'application/json',
+          'accept'      : 'application/json'
+        },
+        body: JSON.stringify({url: magnet, save_parent_id: root.id})
+      }
     )
     .then(response => response.json())
-    .then(json => json.transfers)
-    transfer = transfers.find(transfer => magnet === transfer.source)
-  } else {
-    transfer = addTransferResult.transfer
+    .then(json => json.transfer)
   }
 
   transferWatchers.add(transfer.id)
@@ -220,6 +219,7 @@ async function watch(element) {
   }
 
   element.hidden = true
+  progress.hidden = true
   const watch = element.parentNode.querySelector('[data-role="watch"]')
   watch.href = `https://app.put.io/files/${transfer.file_id}`
   watch.hidden = false
