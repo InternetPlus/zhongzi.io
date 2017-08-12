@@ -1,3 +1,4 @@
+const transferWatchers = new Set
 class Token {
   constructor(string) {
     const [_, service, dialect] = string.match(/^(.+):(.+)$/)
@@ -35,6 +36,8 @@ class Token {
   })
 
   async function refetch() {
+    transferWatchers.clear()
+
     window.results.innerHTML = loading
     let q = findQ()
     document.title = `${q} - Zhongzi.io`
@@ -147,6 +150,9 @@ async function watch(element) {
 
   element.innerText = 'Transferring'
   element.disabled  = true
+  const progress = element.parentNode.querySelector('[data-role="progress"]')
+  progress.hidden = false
+  const progressBar = progress.firstElementChild
 
   const API_SUFFIX = `&oauth_token=${token}`
   const {infohash, magnet} = element.parentNode.dataset
@@ -175,7 +181,7 @@ async function watch(element) {
     .then(json => json.file)
   }
 
-  let transfer = await fetch(
+  const addTransferResult = await fetch(
     `${API_PREFIX}/transfers/add?${API_SUFFIX}`,
     {
       method: 'POST',
@@ -188,18 +194,35 @@ async function watch(element) {
     }
   )
   .then(response => response.json())
-  .then(json => json.transfer)
 
-  while (!transfer.finished_at) {
+  let transfer
+  if ('Alreadyadded' === addTransferResult.error_type) {
+    const transfers = await fetch(
+      `${API_PREFIX}/transfers/list?${API_SUFFIX}`,
+    )
+    .then(response => response.json())
+    .then(json => json.transfers)
+    transfer = transfers.find(transfer => magnet === transfer.source)
+  } else {
+    transfer = addTransferResult.transfer
+  }
+
+  transferWatchers.add(transfer.id)
+  while (!transfer.finished_at && transferWatchers.has(transfer.id)) {
     transfer = await fetch(
       `${API_PREFIX}/transfers/${transfer.id}?${API_SUFFIX}`
     )
     .then(response => response.json())
     .then(json => json.transfer)
-    await new Promise((resolve) => setTimeout(resolve, 5000))
+    progressBar.style.width = `${transfer.percent_done}%`
+    element.innerText = `Transferring (${transfer.percent_done}%)...`
+    await new Promise((resolve) => setTimeout(resolve, 1000))
   }
 
-  element.value = 'Watch Online'
+  element.hidden = true
+  const watch = element.parentNode.querySelector('[data-role="watch"]')
+  watch.href = `https://app.put.io/files/${transfer.file_id}`
+  watch.hidden = false
 
 }
 
