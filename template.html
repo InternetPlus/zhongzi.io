@@ -1,14 +1,17 @@
 <header class="mb-4">Results</header>
 <ul class="list-group mb-2">
 {% for hit in hits.hits %}
-  <li class="list-group-item list-group-item-action flex-column align-items-start mb-4 hit-source" data-hashinfo="{{ hit._id }}">
+  <li class="list-group-item list-group-item-action flex-column align-items-start mb-4 hit-source"
+    data-infohash="{{ hit._id }}"
+    data-magnet="{{ hit._source.magnet }}">
     <p class="mb-1 text-left hit-source-name">{{ hit._source.name }}</p>
     <form class="input-group input-group-sm" onsubmit="magnet(this, event)">
       <input class="form-control" readonly value="{{ hit._source.magnet }}" />
       <span class="input-group-btn">
-        <button class="btn btn-primary" type="submit">Copy</button>
+        <button class="btn btn-primary">Copy</button>
       </span>
     </form>
+    <button class="btn btn-outline-primary btn-block btn-sm" onclick="watch(this)">Transfer to <img src="https://app.put.io/images/logo.svg" alt="put.io"></button>
   </li>
 {% else %}
   <li class="list-group-item d-inline-block text-center font-weight-bold">Not found!</li>

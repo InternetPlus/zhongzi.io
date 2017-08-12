@@ -84,3 +84,8 @@ p.mb-1.text-left.hit-source-name a {
 @media (max-width: 768px) {
   .col-md-4.sidebar {padding: 0 10px;}
 }
+
+button.btn.btn-outline-primary.btn-block.btn-sm img {
+    max-height: 1em;
+    padding-left: 0.5em;
+}
