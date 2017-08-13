@@ -155,7 +155,8 @@ async function watch(element) {
   const progressBar = progress.firstElementChild
 
   const API_SUFFIX = `&oauth_token=${token}`
-  const {infohash, magnet} = element.parentNode.dataset
+  const {infohash, magnet, name} = element.parentNode.dataset
+
   const files = await fetch(
     `${API_PREFIX}/files/list?${API_SUFFIX}`
   )
@@ -179,6 +180,18 @@ async function watch(element) {
     )
     .then(response => response.json())
     .then(json => json.file)
+  }
+
+  const downloadedFiles = await fetch(
+    `${API_PREFIX}/files/list?parent_id=${root.id}${API_SUFFIX}`
+  )
+  .then(response => response.json())
+  .then(json => json.files)
+
+  const downloaded = downloadedFiles.find(file => name === file.name)
+
+  if (downloaded) {
+    return complete(downloaded.id)
   }
 
   let transfer
@@ -218,11 +231,15 @@ async function watch(element) {
     await new Promise((resolve) => setTimeout(resolve, 1000))
   }
 
-  element.hidden = true
-  progress.hidden = true
-  const watch = element.parentNode.querySelector('[data-role="watch"]')
-  watch.href = `https://app.put.io/files/${transfer.file_id}`
-  watch.hidden = false
+  return complete(transfer.file_id)
+
+  function complete(id) {
+    element.hidden = true
+    progress.hidden = true
+    const watch = element.parentNode.querySelector('[data-role="watch"]')
+    watch.href = `https://app.put.io/files/${id}`
+    watch.hidden = false
+  }
 
 }
 

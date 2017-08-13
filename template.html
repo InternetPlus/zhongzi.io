@@ -3,9 +3,10 @@
 {% for hit in hits.hits %}
   <li class="list-group-item list-group-item-action flex-column align-items-start mb-4 hit-source"
     data-infohash="{{ hit._id }}"
+    data-name="{{ hit._source.name }}"
     data-magnet="{{ hit._source.magnet }}">
     <p class="mb-1 text-left hit-source-name">{{ hit._source.name }}</p>
-    <form class="input-group input-group-sm" onsubmit="magnet(this, event)">
+    <form class="input-group input-group-sm mb-1" onsubmit="magnet(this, event)">
       <input class="form-control" readonly value="{{ hit._source.magnet }}" />
       <span class="input-group-btn">
         <button class="btn btn-primary">Copy</button>
