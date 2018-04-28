@@ -47,6 +47,10 @@ class Token {
 
     {
       const search = {
+        sort: [
+          { _score: 'desc' },
+          { discovered_at: 'desc' }
+        ],
         query: {
           bool: {
             must:   [ { match:        { name: q } } ],
@@ -89,7 +93,7 @@ function findQ() {
   if (q) {
     window.search.value = q
   } else {
-    q = 'Movie'
+    q = 'Movie, TV, Anime'
   }
   return q
 }
