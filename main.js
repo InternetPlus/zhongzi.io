@@ -11,7 +11,9 @@ class Token {
   }
 }
 
-(() => {
+const API_ROOT = localStorage.API_ROOT || 'https://api.zhongzi.io'
+
+;(() => {
 
   const query = queryInHash()
   if (query.token) {
@@ -39,8 +41,8 @@ class Token {
     transferWatchers.clear()
 
     window.results.innerHTML = loading
-    let q = findQ()
-    document.title = `${q} - Zhongzi.io`
+    let q = recognizeQ()
+    document.title = `${q.title} - Zhongzi.io`
 
     ga('set', 'page', `${location.pathname}${location.search}${location.hash}`);
     ga('send', 'pageview');
@@ -53,14 +55,16 @@ class Token {
         ],
         query: {
           bool: {
-            must:   [ { match:        { name: q } } ],
-            should: [ { match_phrase: { name: q } } ],
             filter
           }
         }
       }
+      if (q.value) {
+        search.query.bool.must    = [ { match:        { name: q.value } } ]
+        search.query.bool.should  = [ { match_phrase: { name: q.value } } ]
+      }
       const _q = b64EncodeUnicode(JSON.stringify(search))
-      const response = await fetch(`https://api.zhongzi.io/search/?${Qs.stringify({q: _q})}`)
+      const response = await fetch(`${API_ROOT}/search/?${Qs.stringify({q: _q})}`)
       const results = await response.json()
 
       nunjucks.render('template.html', results, (error, html) => {
@@ -84,17 +88,16 @@ function queryInHash() {
   return Qs.parse(location.hash.slice(location.hash.indexOf('?') + 1))
 }
 
-function findQ() {
-  let q
-  q = queryInHash().q
+function recognizeQ() {
+  const q = {}
+  q.value = queryInHash().q
   if (!q) {
-    q = Qs.parse(location.search.slice(1)).q
+    q.value = Qs.parse(location.search.slice(1)).q
   }
-  if (q) {
-    window.search.value = q
-  } else {
-    q = 'Movie, TV, Anime'
+  if (q.value) {
+    window.search.value = q.value
   }
+  q.title = q.value || 'Movie, TV, Anime'
   return q
 }
 
@@ -140,7 +143,7 @@ async function watch(element) {
   const token = localStorage['token_put.io']
   if (!token) {
     const redirect_uri_querystring = Qs.stringify({
-      q: findQ(),
+      q: recognizeQ().value,
       token: 'put.io:'
     })
     const querystring = Qs.stringify({
