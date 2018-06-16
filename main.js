@@ -49,6 +49,7 @@ const API_ROOT = localStorage.API_ROOT || 'https://api.zhongzi.io'
 
     {
       const search = {
+        size: 200,
         sort: [
           { _score: 'desc' },
           { discovered_at: 'desc' }
