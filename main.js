@@ -29,7 +29,7 @@ const API_ROOT = localStorage.API_ROOT || 'https://api.zhongzi.io'
 
     {
       const search = {
-        size: 200,
+        size: 20,
         sort: [
           { _score: 'desc' },
           { discovered_at: 'desc' }
@@ -154,10 +154,15 @@ class Provider {
     for (const transfer of transfers) {
       this.transfers.set(transfer.id, transfer)
     }
+    return transfers
   }
 
   async watchTransfers(callback) {
     this.transferWatchers.add(callback)
+    if (this.transferWatchers.size > 1) {
+      // delegate
+      return
+    }
     while (this.transferWatchers.size) {
       await this.syncTransfers()
       for (const callback of this.transferWatchers) {
@@ -168,12 +173,14 @@ class Provider {
   }
 
   async watchTransfer(id, callback) {
-    await this.syncTransfers()
-    const transfer = this.transfers.get(id)
-    if (transfer) {
-      callback(transfer)
-      return
-    }
+    //await this.syncTransfers()
+    //const transfer = this.transfers.get(id)
+    //if (transfer) {
+      //callback(transfer)
+      //if ('finished' === transfer.status) {
+        //return
+      //}
+    //}
 
     // add watcher
     const watcher = () => {
@@ -181,7 +188,10 @@ class Provider {
       if (!transfer) {
         return
       }
-      this.transferWatchers.delete(watcher)
+      console.log(transfer);
+      if ('finished' === transfer.status) {
+        this.transferWatchers.delete(watcher)
+      }
       callback(transfer)
     }
     this.watchTransfers(watcher)
@@ -205,6 +215,15 @@ async function watch(element) {
     '/transfer/create',
     {method: 'POST', body: {src: magnet}}
   )
+  if ('error' === transfer.status && 'You have reached the maximum of 25 active download jobs. Please wait or abort an old one.' === transfer.message) {
+    const transfers = await provider.syncTransfers()
+    const transferToAbort = transfers.reverse().find((transfer) => /. ETA is unknown$/.test(transfer.message))
+    await provider.fetch('/transfer/delete', {method: 'POST', body: {id: transferToAbort.id}})
+    const transfer = await provider.fetch(
+      '/transfer/create',
+      {method: 'POST', body: {src: magnet}}
+    )
+  }
 
   provider.watchTransfer(transfer.id, (transfer) => {
     const percent = (transfer.progress * 100).toFixed(2)

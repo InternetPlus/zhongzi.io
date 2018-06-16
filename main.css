@@ -87,8 +87,6 @@ button.btn.btn-outline-primary.btn-block.btn-sm img {
     padding-left: 0.5em;
 }
 
-li.list-group-item.list-group-item-action.flex-column.align-items-start.mb-4.hit-source
- .progress .progress-bar {
+ul.result-list li .progress {
     height: 1px;
-    text-align: center;
 }
