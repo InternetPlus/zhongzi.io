@@ -10,10 +10,10 @@
       <form class="input-group input-group-sm mb-1" onsubmit="magnet(this, event)">
         <input class="form-control" readonly value="{{ hit._source.magnet }}" />
         <div class="input-group-append">
-          <button class="btn btn-outline-primary">Copy</button>
+          <button class="btn btn-outline-light">Copy</button>
         </div>
       </form>
-      <button class="btn btn-primary btn-block btn-lg" onclick="watch(this)">Watch Online</button>
+      <button class="btn btn-primary btn-block btn-sm" onclick="watch(this)">Watch Online</button>
       <div data-role="progress" class="progress w-100" hidden>
         <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
       </div>

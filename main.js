@@ -123,7 +123,6 @@ class Provider {
     this.base = 'https://www.premiumize.me/api'
     this.pin  = '9p9pkpjf3yccyn5i'
     this.transfers          = new Map
-    this.watchingTransfers  = false
     this.transferWatchers   = new Set
   }
   async fetch(endpoint, options) {
@@ -159,13 +158,9 @@ class Provider {
 
   async watchTransfers(callback) {
     this.transferWatchers.add(callback)
-    if (this.watchingTransfers) {
-      return
-    }
-    this.watchingTransfers = true
-    while (this.watchingTransfers) {
+    while (this.transferWatchers.size) {
       await this.syncTransfers()
-      for (const callback of transferWatchers) {
+      for (const callback of this.transferWatchers) {
         callback()
       }
       await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -175,8 +170,21 @@ class Provider {
   async watchTransfer(id, callback) {
     await this.syncTransfers()
     const transfer = this.transfers.get(id)
-    callback(transfer)
-    // TODO: add watcher
+    if (transfer) {
+      callback(transfer)
+      return
+    }
+
+    // add watcher
+    const watcher = () => {
+      const transfer = this.transfers.get(id)
+      if (!transfer) {
+        return
+      }
+      this.transferWatchers.delete(watcher)
+      callback(transfer)
+    }
+    this.watchTransfers(watcher)
   }
 }
 
@@ -191,6 +199,7 @@ async function watch(element) {
   const progressBar = progress.firstElementChild
 
   const {infohash, magnet, name} = element.parentNode.parentNode.dataset
+  //const src = magnet.replace(/btih:(.*)&.*$/, 'btih:$1&dn=$1')
 
   const transfer = await provider.fetch(
     '/transfer/create',
@@ -198,7 +207,7 @@ async function watch(element) {
   )
 
   provider.watchTransfer(transfer.id, (transfer) => {
-    const percent = transfer.progress * 100
+    const percent = (transfer.progress * 100).toFixed(2)
     progressBar.style.width = `${percent}%`
     element.innerText = `Transferring (${percent}%)...`
 
@@ -216,19 +225,12 @@ async function watch(element) {
       '/folder/list',
       {query: {id: transfer.folder_id}}
     )
-    const videos = files.filter(file => file.stream_link)
-    //for (const video of videos) {
-      //const node = document.createElement('video')
-      //const node2 = document.createElement('source')
-      //node2.src = video.stream_link
-      //node.appendChild(node2)
-      //node.style.width = '100%'
-      //ul.appendChild(node)
-    //}
+    const videos = files ? files.filter(file => file.stream_link) : []
     nunjucks.render('video-list.html', {videos}, (error, html) => {
       ul.innerHTML = html
     })
     ul.hidden = false
+    provider.fetch('/transfer/clearfinished', {method: 'POST'})
   }
 
 }
