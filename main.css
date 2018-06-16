@@ -18,10 +18,6 @@ input#search {
     border: 2px;
 }
 
-.container {
-    max-width: 100vw;
-}
-
 li.list-group-item.list-group-item-action.flex-column.align-items-start.hit-source {
     background: rgba(255, 255, 255, 0.8);
 }
@@ -83,6 +79,7 @@ p.mb-1.text-left.hit-source-name a {
 
 @media (max-width: 768px) {
   .col-md-4.sidebar {padding: 0 10px;}
+  .container { max-width: 100vw; }
 }
 
 button.btn.btn-outline-primary.btn-block.btn-sm img {

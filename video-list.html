@@ -1,0 +1,8 @@
+{% for video in videos %}
+  <li class="card text-white bg-secondary">
+    <header class="card-header">{{ video.name }}</header>
+    <video class="card-body" src="{{video.stream_link}}" width="100%" height="auto" controls preload="none"></video>
+  </li>
+{% else %}
+  <li class="list-group-item d-inline-block text-center font-weight-bold">Can not stream online!</li>
+{% endfor %}

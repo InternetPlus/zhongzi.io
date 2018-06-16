@@ -13,7 +13,7 @@
     <link rel="search" href="./opensearch.xml" type="application/opensearchdescription+xml" title="Zhongzi.io" />
 
     <!-- Bootstrap core CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/notie/4.3.1/notie.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
@@ -55,9 +55,9 @@
               <form id="search-form" class="input-group input-group-lg" action="." onsubmit="window.submit(event)">
                 <input id="search" type="search" name="q" class="form-control" placeholder="Search for...">
                 <input type="submit" style="display: none" />
-                <span class="input-group-btn">
-                  <button class="btn bg-faded" type="submit">Go!</button>
-                </span>
+                <div class="input-group-append">
+                  <button class="btn btn-light" type="submit">Go!</button>
+                </div>
               </form>
               <!--<a href="#" class="btn btn-lg btn-secondary">Learn more</a>-->
             </p>
@@ -75,21 +75,9 @@
 
         </div>
 
-        <div class="container hidden-sm-down mb-4">
-          <script type="text/javascript">
-            (function() {
-              if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
-              var unit = {"calltype":"async[2]","publisher":"crzidea","width":728,"height":90,"sid":"Chitika Default"};
-              var placement_id = window.CHITIKA.units.length;
-              window.CHITIKA.units.push(unit);
-              document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
-            }());
-          </script>
-        </div>
-
-        <div class="container content-container">
+        <div class="container">
           <div class="row">
-            <div class="col-md-8" id="results">
+            <div class="col-md-8 col-sm-12" id="results">
               <div class="spinner">
                 <div class="dot1"></div>
                 <div class="dot2"></div>
@@ -122,7 +110,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.5.0/qs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.0.1/nunjucks.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notie/4.3.1/notie.min.js"></script>
