@@ -164,11 +164,17 @@ async function watch(element) {
   const API_SUFFIX = `&oauth_token=${token}`
   const {infohash, magnet, name} = element.parentNode.dataset
 
-  const files = await fetch(
+  const response = await fetch(
     `${API_PREFIX}/files/list?${API_SUFFIX}`
   )
-  .then(response => response.json())
-  .then(json => json.files)
+  if (401 === response.status) {
+    notie.alert({text: 'Your account is not active!', type: 'error'})
+    localStorage.removeItem('token_put.io')
+    setTimeout(() => window.location.reload(), 3000)
+    return
+  }
+  const json = await response.json()
+  const files = json.files
 
   //let directory = list.files.find((file) => infohash === file.name)
   let root = files.find((file) => 'zhongzi.io' === file.name)
