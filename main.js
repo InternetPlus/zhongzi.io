@@ -188,7 +188,6 @@ class Provider {
       if (!transfer) {
         return
       }
-      console.log(transfer);
       if ('finished' === transfer.status) {
         this.transferWatchers.delete(watcher)
       }
@@ -199,6 +198,20 @@ class Provider {
 }
 
 const provider = new Provider
+
+// https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+function generateUUID() { // Public Domain/MIT
+  var d = new Date().getTime();
+  if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+    d += performance.now(); //use high-precision timer if available
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		var r = (d + Math.random() * 16) % 16 | 0;
+		d = Math.floor(d / 16);
+		return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+const ONE_TIME_UUID = generateUUID()
 
 async function watch(element) {
 
@@ -211,17 +224,21 @@ async function watch(element) {
   const {infohash, magnet, name} = element.parentNode.parentNode.dataset
   //const src = magnet.replace(/btih:(.*)&.*$/, 'btih:$1&dn=$1')
 
-  const transfer = await provider.fetch(
+  const {id: folder_id} = await provider.fetch(
+    '/folder/create',
+    {method: 'POST', body: {name: ONE_TIME_UUID}}
+  )
+  let transfer = await provider.fetch(
     '/transfer/create',
-    {method: 'POST', body: {src: magnet}}
+    {method: 'POST', body: {src: magnet, folder_id}}
   )
   if ('error' === transfer.status && 'You have reached the maximum of 25 active download jobs. Please wait or abort an old one.' === transfer.message) {
     const transfers = await provider.syncTransfers()
     const transferToAbort = transfers.reverse().find((transfer) => /. ETA is unknown$/.test(transfer.message))
     await provider.fetch('/transfer/delete', {method: 'POST', body: {id: transferToAbort.id}})
-    const transfer = await provider.fetch(
+    transfer = await provider.fetch(
       '/transfer/create',
-      {method: 'POST', body: {src: magnet}}
+      {method: 'POST', body: {src: magnet, folder_id}}
     )
   }
 
