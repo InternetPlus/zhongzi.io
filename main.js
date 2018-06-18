@@ -75,9 +75,7 @@ function recognizeQ() {
   if (!q) {
     q.value = Qs.parse(location.search.slice(1)).q
   }
-  if (q.value) {
-    window.search.value = q.value
-  }
+  window.search.value = q.value || ''
   q.title = q.value || 'Movie, TV, Anime'
   return q
 }
