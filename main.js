@@ -41,8 +41,12 @@ const API_ROOT = localStorage.API_ROOT || 'https://api.zhongzi.io'
         }
       }
       if (q.value) {
-        search.query.bool.must    = [ { match:        { name: q.value } } ]
-        search.query.bool.should  = [ { match_phrase: { name: q.value } } ]
+        //search.query.bool.must = [ { match: { name: q.value } } ]
+        search.query.bool.should = [
+          { match       : { name: q.value } },
+          { match_phrase: { name: q.value } },
+          { term        : { _id : q.value } }
+        ]
       }
       const _q = b64EncodeUnicode(JSON.stringify(search))
       const response = await fetch(`${API_ROOT}/search/?${Qs.stringify({q: _q})}`)
