@@ -213,7 +213,7 @@ function generateUUID() { // Public Domain/MIT
 		return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
   });
 }
-const ONE_TIME_UUID = generateUUID()
+const SESSION_ID = generateUUID()
 
 async function watch(element) {
 
@@ -228,7 +228,7 @@ async function watch(element) {
 
   const {id: folder_id} = await provider.fetch(
     '/folder/create',
-    {method: 'POST', body: {name: ONE_TIME_UUID}}
+    {method: 'POST', body: {name: SESSION_ID}}
   )
   let transfer = await provider.fetch(
     '/transfer/create',
