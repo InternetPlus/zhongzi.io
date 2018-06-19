@@ -217,6 +217,7 @@ const SESSION_ID = generateUUID()
 
 async function watch(element) {
 
+  gtag_report_conversion()
   element.innerText = 'Transferring'
   element.disabled  = true
   const progress = element.parentNode.querySelector('[data-role="progress"]')
