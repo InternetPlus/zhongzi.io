@@ -79,16 +79,6 @@
               <div class="mb-4 pb-4" id="disqus_thread">
                 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
               </div>
-              <script type="text/javascript">
-                (function() {
-                  if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
-                  var unit = {"calltype":"async[2]","publisher":"crzidea","width":300,"height":250,"sid":"Chitika Default"};
-                  var placement_id = window.CHITIKA.units.length;
-                  window.CHITIKA.units.push(unit);
-                  document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
-                }());
-              </script>
-              <a href="https://www.chitika.com/publishers/apply?refid=crzidea" target="_blank"><img src="https://images.chitika.net/ref_banners/300x250_hidden_ad.png" /></a>
             </div>
           </div>
         </div>
@@ -141,6 +131,15 @@
     </script>
 
     <script src="./main.js"></script>
+
+    <script src="https://unpkg.com/@elastic/apm-rum@4.0.1/dist/bundles/elastic-apm-rum.umd.min.js" crossorigin></script>
+    <script>
+      elasticApm.init({
+        serviceName: 'zhongzi_io',
+        serverUrl: 'https://6258a6b4aa4b46708c7981e4387cd06f.apm.ap-southeast-1.aws.cloud.es.io:443',
+      })
+    </script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-841770879"></script>
     <script async src="https://www.google-analytics.com/analytics.js"></script>
 
@@ -161,8 +160,6 @@
     (d.head || d.body).appendChild(s);
     })();
     </script>
-
-    <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
 
   </body>
 </html>
